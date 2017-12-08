@@ -1,0 +1,7 @@
+[package]
+name = "mahjong-online-server"
+version = "0.1.0"
+authors = ["BlueyNeilo"]
+
+[dependencies]
+mio = { git = "https://github.com/carllerche/mio" }
