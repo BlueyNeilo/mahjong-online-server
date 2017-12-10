@@ -10,46 +10,22 @@ https://docs.rs/mio/0.6.11/mio/index.html
 
 */
 
-//First meaningful github commit with code changed
+/*
+This server contains the Mahjong game state.
+The game instance of each player communicates with this server.
 
+Client requests:
+-Wall state (Position of head, Position of tail)
+-Current player (Relative to the client)
+-Dead tiles state (Client gives number of dead tiles they have recieved. Server sends out the newest tiles up to the difference between dead tiles)
+-Tile from head (When a player starts their turn)
+-Tile from tail (For flowers and kong)
+
+Server requests:
+-Get live call (Requested of every player: chi, pong, kong)
+-Get dead tile (When a player is to throw out a tile)
+*/
 
 //IP (Local host): 127.0.0.1
-//TCP port used: 44405
-
-//Metal IO
-extern crate mio;
-//Event Loop
-use mio::*;
-
-//TCP server
-use std::net::{TcpListener, SocketAddr};
-use mio::net::TcpStream;
-
-
-fn main() {
-    //Bind server socket
-    let addr: SocketAddr = "127.0.0.1:0".parse()?;
-    let server = TcpListener::bind(&addr)?;
-
-    //Make events loop and a poll handle
-    let poll = Poll::new()?;
-    let mut events = Events::with_capacity(1024);
-
-    //Connect the stream
-    let stream = TcpStream::connect(&server.local_addr()?)?;
-
-    //Register stream with poll;
-    poll.register(&stream, Token(0), Ready::readable() | Ready::writable(), PollOpt::edge())?;
-
-    //Wait for socket to become ready.
-    loop {
-        poll.poll(&mut events, None)?;
-        for event in &events {
-            if event.token() == Token(0) && event.readiness().is_writable() {
-                //Socket connected
-                return Ok(());
-            }
-        }
-    }
-}
-
+//Server TCP port used: 44405
+//Client TCP port used: 44406
