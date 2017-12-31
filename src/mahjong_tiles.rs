@@ -1,7 +1,5 @@
 //This Module has the data for the tile types
 
-trait Simple;
-
 enum Dragon {
     Red,
     Green,
@@ -26,7 +24,7 @@ enum Honour {
 }
 
 enum Tile {
-    S(Simple)
+    S(Simple),
     H(Honour),
     Flower(u8)
 }
